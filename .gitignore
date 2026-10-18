@@ -8,6 +8,11 @@ next_ride/
 progress/
 legacy_outputs/
 
+# Claude Code working documents (specs, plans, settings) - kept locally only
+docs/superpowers/
+.claude/
+CLAUDE.md
+
 # R / RStudio
 .Rhistory
 .RData

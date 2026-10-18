@@ -39,7 +39,6 @@ Without the app: `source("plan_next_ride.R")` does the same planning with the se
 | `R/`              | The engine: config, network, rides, planner, stats, export.         |
 | `tests/testthat/` | Unit tests: `testthat::test_dir("tests/testthat")` after `source("R/setup.R")`. |
 | `data/`           | Oslo boundary, districts and streets from OSM; `strava/` holds the Strava history (heatmap only); `cache/` holds the built network, per-ride coverage and the last plan. |
-| `docs/`           | Design spec and implementation plan.                                |
 | `legacy_scripts/`, `legacy_outputs/` | Old scripts and outputs. Not used.               |
 
 ## Updating the map data
