@@ -1,0 +1,16 @@
+# Personal ride data (reveals home location) - kept locally, not in git
+done_rides/
+data/strava/
+
+# Map data, caches and generated output - rebuilt from R/osm_extract.R and the app
+data/
+next_ride/
+progress/
+legacy_outputs/
+
+# R / RStudio
+.Rhistory
+.RData
+.Rproj.user/
+Rplots.pdf
+*.nb.html

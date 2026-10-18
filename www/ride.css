@@ -1,0 +1,82 @@
+/* Ride Oslo - app chrome. Summer fjord palette; charts and maps keep their own colours. */
+:root {
+  --ro-ink:   #0E3540;   /* text: midnight green, darkened */
+  --ro-green: #006078;   /* Midnight Green - structure */
+  --ro-sky:   #82BAC4;   /* Sky Blue - quiet lines */
+  --ro-shell: #FAEFED;   /* Seashell - page */
+  --ro-rose:  #FFD4D1;   /* Tea Rose - soft surfaces */
+  --ro-coral: #E37C78;   /* Light Coral - the one action per page */
+  --ro-line:  #F0D6D2;   /* hairline between rose and shell */
+  --ro-muted: #557178;   /* secondary text */
+}
+
+body { font-variant-numeric: tabular-nums; color: var(--ro-ink); }
+
+/* Navbar: deep green band with a rose horizon line under it */
+.navbar { box-shadow: none; border-bottom: 3px solid var(--ro-rose); }
+.navbar-brand { font-family: "Familjen Grotesk", sans-serif; font-weight: 700; font-size: 1.4rem;
+                letter-spacing: -0.01em; color: var(--ro-shell) !important; }
+.navbar .nav-link { color: rgba(250, 239, 237, 0.72) !important; font-weight: 500; }
+.navbar .nav-link:hover { color: #fff !important; }
+.navbar .nav-link.active { color: #fff !important; box-shadow: inset 0 -3px 0 var(--ro-coral); }
+.navbar .text-muted { color: var(--ro-sky) !important; }
+
+/* Cards: white sheets on seashell, hairline rose border, no drop shadow */
+.card { background: #fff; border: 1px solid var(--ro-line); border-radius: 14px; box-shadow: none; }
+.card-header { background: transparent; border-bottom: 1px solid var(--ro-line); color: var(--ro-green);
+               font-family: "Familjen Grotesk", sans-serif; font-weight: 600; font-size: 1.05rem; }
+.card-footer { background: #FFF7F5; border-top: 1px solid var(--ro-line); color: var(--ro-muted); font-size: 0.85rem; }
+
+/* Value boxes: quiet by default ... */
+.bslib-value-box { border-radius: 14px; box-shadow: none; }
+/* bslib sets the box colour through its own variables; override them so plain boxes are white sheets */
+.bslib-value-box:not(.vb-hero) { --bslib-color-bg: #fff; --bslib-color-fg: var(--ro-ink);
+                                 background-color: #fff !important; border: 1px solid var(--ro-line) !important; }
+.bslib-value-box .value-box-title { color: var(--ro-muted); font-size: 0.9rem; font-weight: 500; }
+.bslib-value-box .value-box-value { color: var(--ro-green); font-family: "Familjen Grotesk", sans-serif;
+                                    font-weight: 600; letter-spacing: -0.02em; }
+.bslib-value-box p { color: var(--ro-muted); font-size: 0.85rem; margin-bottom: 0; }
+/* Each row of boxes runs through the palette: green (headline), sky, rose, coral.
+   Light tones carry dark ink text so they stay readable (all >= 4.5:1). */
+.bslib-value-box.vb-hero { background: var(--ro-green) !important; border-color: var(--ro-green) !important; }
+.bslib-value-box.vb-hero .value-box-title, .bslib-value-box.vb-hero p { color: rgba(250, 239, 237, 0.85); }
+.bslib-value-box.vb-hero .value-box-value { color: var(--ro-rose); }
+.bslib-value-box.tone-sky   { background: var(--ro-sky) !important;   border-color: var(--ro-sky) !important; }
+.bslib-value-box.tone-rose  { background: var(--ro-rose) !important;  border-color: #F5C2BE !important; }
+.bslib-value-box.tone-coral { background: var(--ro-coral) !important; border-color: var(--ro-coral) !important; }
+.bslib-value-box.tone-sky .value-box-value, .bslib-value-box.tone-rose .value-box-value { color: var(--ro-green); }
+.bslib-value-box.tone-coral .value-box-value,
+.bslib-value-box.tone-sky .value-box-title, .bslib-value-box.tone-sky p,
+.bslib-value-box.tone-rose .value-box-title, .bslib-value-box.tone-rose p,
+.bslib-value-box.tone-coral .value-box-title, .bslib-value-box.tone-coral p { color: var(--ro-ink); }
+
+/* A street name, not a number: smaller, one line, never broken mid-word */
+#hv_top { font-size: clamp(1.1rem, 1.7vw, 1.75rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+          overflow-wrap: normal; word-break: normal; }
+
+/* Sidebar: a rose-tinted shelf */
+.bslib-sidebar-layout > .sidebar { background: #FFF6F4; border-right: 1px solid var(--ro-line); }
+.bslib-sidebar-layout { border: 1px solid var(--ro-line); border-radius: 14px; background: transparent; }
+.control-label, .form-label { color: var(--ro-ink); font-weight: 600; }
+.help-block, .form-text, .sidebar-note { color: var(--ro-muted); font-size: 0.85rem; }
+
+/* Buttons: coral is reserved for the main action */
+.btn-coral { background: var(--ro-coral); border-color: var(--ro-coral); color: #fff; font-weight: 600; }
+.btn-coral:hover, .btn-coral:active { background: #D4645F; border-color: #D4645F; color: #fff; }
+.btn-outline-primary { font-weight: 500; }
+.btn:focus-visible, .form-check-input:focus-visible, .nav-link:focus-visible {
+  outline: 3px solid var(--ro-sky); outline-offset: 2px; box-shadow: none; }
+
+/* Tables */
+.table { --bs-table-striped-bg: #FDF1EF; --bs-table-bg: transparent; }
+.table > thead th { color: var(--ro-green); font-weight: 600; border-bottom: 2px solid var(--ro-sky); }
+
+/* Messages */
+.alert-warning { background: var(--ro-rose); border-color: #F3B9B5; color: #6B2724; }
+.alert-info { background: #E7F1F3; border-color: var(--ro-sky); color: var(--ro-ink); }
+
+/* Maps get a height from the window but never collapse in a small window / RStudio viewer */
+#map_ridden, #map_next, #map_heat { min-height: 450px; }
+.leaflet-container { border-radius: 10px; font-family: inherit; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
