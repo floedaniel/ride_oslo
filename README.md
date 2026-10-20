@@ -76,7 +76,7 @@ flowchart LR
 ```
 
 1. On **Next ride**, choose a length and what to ride on, and press **Plan next ride**.
-2. **Download GPX** and load it on the bike computer.
+2. **Save GPX to next_ride/** writes `next_ride/next_ride.gpx`; load it on the bike computer.
 3. Ride.
 4. Upload the recorded `.fit` file in the app, or copy it into `done_rides/` yourself. The app
    notices new files within a couple of seconds.

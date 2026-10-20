@@ -19,7 +19,7 @@ strava_acts <- strava_activities(cfg, net)     # Strava history: heatmap only, n
 goal <- goal_edges(net)
 home <- cfg$home_lonlat
 
-col_new <- "#2e7d32"; col_repeat <- "#ef6c00"; col_old <- "#795548"; col_walk <- "#d500f9"; col_todo <- "#c62828"
+col_new <- "#2e7d32"; col_repeat <- "#ef6c00"; col_old <- "#795548"; col_walk <- "#d500f9"; col_todo <- "#c62828"; col_ridden <- "#6a1b9a"
 fmt  <- function(x, d = 1) ifelse(is.na(x), "n/a", formatC(x, format = "f", digits = d, big.mark = " "))
 km_txt <- function(x, d = 1) ifelse(is.na(x), "n/a", paste(fmt(x, d), "km"))
 fmt_h <- function(h) ifelse(is.na(h), "n/a", sprintf("%d:%02d", floor(h), round((h %% 1) * 60)))
@@ -84,7 +84,7 @@ ui <- page_navbar(
                     ticks = FALSE),
         helpText("1 = avoid repeats hard (detours to new streets), 5 = don't mind repeats (shorter, tighter loops)."),
         actionButton("plan", "Plan next ride", class = "btn-coral btn-lg w-100"),
-        downloadButton("download", "Download GPX", class = "btn-outline-primary w-100"),
+        actionButton("save_gpx", "Save GPX to next_ride/", icon = icon("download"), class = "btn-outline-primary w-100"),
         hr(),
         fileInput("upload", "Add a finished ride (.fit, .gpx)", accept = c(".fit", ".gpx", ".csv"), multiple = TRUE),
         helpText("Saved to done_rides/. Or copy the file there yourself - the app notices.")
@@ -210,11 +210,11 @@ server <- function(input, output, session) {
     if (length(ids)) {
       rs <- st_sf(ride = p$first_ride[ids], geometry = net$edge_wgs[ids])
       rs$date <- format(as.Date(p$rides$start[rs$ride]), "%d %b %Y")
-      pal_r <- colorNumeric("viridis", domain = c(1, max(2, nrow(p$rides))))
-      m <- m |> addPolylines(data = rs, color = ~pal_r(ride), weight = 3.5, opacity = 0.95,
+      # One colour: ridden or not. Purple stands out on Esri's yellow roads and differs from the red "not ridden"
+      m <- m |> addPolylines(data = rs, color = col_ridden, weight = 3.5, opacity = 0.95,
                              label = ~sprintf("First ridden on ride %d (%s)", ride, date), group = "Ridden streets") |>
         addPolylines(data = st_sf(geometry = p$tracks), color = "#1565c0", weight = 1.5, opacity = 0.6, group = "GPS tracks") |>
-        addLegend("bottomright", pal = pal_r, values = c(1, max(2, nrow(p$rides))), title = "First ridden<br>on ride #")
+        addLegend("bottomright", colors = col_ridden, labels = "Ridden", opacity = 0.95)
       groups_over <- c("Ridden streets", "GPS tracks", groups_over)
     }
     if (any(net$dropped_in_goal))
@@ -303,13 +303,13 @@ server <- function(input, output, session) {
                        fillColor = "yellow", fillOpacity = 1, group = "hover", label = sprintf("%.1f km", p$route$km[i]))
   })
 
-  output$download <- downloadHandler(
-    filename = function() "next_ride.gpx",
-    content = function(file) {
-      src <- file.path(cfg$next_dir, "next_ride.gpx")
-      validate(need(file.exists(src), "Plan a ride first"))
-      file.copy(src, file)
-    })
+  # Written straight into next_ride/ (a browser download would land in the browser's Downloads folder)
+  observeEvent(input$save_gpx, {
+    p <- plan()
+    if (is.null(p)) return(showNotification("Plan a ride first", type = "warning"))
+    save_next_ride(p, cfg)
+    showNotification(paste("Saved", normalizePath(file.path(cfg$next_dir, "next_ride.gpx"))), type = "message")
+  })
 
   # ---------------- Statistics page
   output$st_pct   <- renderText(paste0(fmt(tot()$pct, 2), " %"))
